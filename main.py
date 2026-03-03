@@ -4,7 +4,7 @@ import random
 
 app = FastAPI()
 
-class Equipments(BaseModel):
+class Equipment(BaseModel):
     name: str
     type: str
     location: str
@@ -82,7 +82,7 @@ def list_equipments():
     return {"equipments": equipments}
 
 @app.post("/equipments", status_code=status.HTTP_201_CREATED)
-def new_equipment(post: Equipments):
+def new_equipment(post: Equipment):
     equipments.append(post.model_dump())
     equipments_with_IDs = assign_IDs(equipments)
     return {"equipments": equipments_with_IDs}
@@ -95,7 +95,7 @@ def get_specific_equipment(id: int):
         return {"equipment": equipment}
 
 @app.put("/equipments/{id}")
-def update_equipment_information(id: int, update: Equipments):
+def update_equipment_information(id: int, update: Equipment):
     updated_equipment = update_equipment(equipments, update.model_dump(), id)
     if updated_equipment is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="El equipo solicitado no existe en el inventario")
